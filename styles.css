@@ -1,0 +1,253 @@
+:root {
+  --bg: #0f1f14;
+  --card: #13271a;
+  --accent: #22c55e;
+  --accent-strong: #16a34a;
+  --text: #e6f2ea;
+  --muted: #a7c3b3;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: "Pretendard", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #0b1a10 0%, var(--bg) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-container {
+  width: min(720px, 92vw);
+  padding: 20px 20px 28px;
+}
+
+.app-header h1 {
+  margin: 0 0 16px 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.screen {
+  display: none;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+.screen.active { display: block; }
+
+.lead {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.actions { display: flex; gap: 12px; }
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn.primary {
+  background: var(--accent);
+  color: #0b1a10;
+  border-color: rgba(0,0,0,0.08);
+}
+.btn.danger { background: var(--danger); border-color: rgba(0,0,0,0.08); }
+
+.quiz-status { display: flex; justify-content: space-between; margin-bottom: 12px; color: var(--muted); gap: 8px; }
+.quiz-status #timer { font-weight: 700; color: var(--text); }
+.question {
+  font-size: 22px;
+  line-height: 1.5;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+}
+
+.ox-buttons { display: flex; gap: 12px; margin-top: 16px; }
+.btn.ox { flex: 1; font-size: 20px; padding: 16px 0; }
+.btn.ox.o { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.35); }
+.btn.ox.x { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.35); }
+
+/* 정답/오답 피드백 플래시 */
+.flash-correct { animation: flash-correct 450ms ease-in-out; }
+.flash-wrong { animation: flash-wrong 450ms ease-in-out; }
+@keyframes flash-correct {
+  0% { background-color: rgba(34,197,94,0.35); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-wrong {
+  0% { background-color: rgba(239,68,68,0.35); }
+  100% { background-color: transparent; }
+}
+
+.final-score { font-size: 20px; margin: 12px 0 20px; }
+
+/* 단계 선택 */
+.map-wrap { position: relative; aspect-ratio: 3/5; width: min(420px, 92vw); margin: 0 auto; }
+.levels-map { width: 100%; height: auto; display: block; position: relative; z-index: 5; }
+.nature-layer { position: absolute; inset: 0; pointer-events: none; }
+.layer-sky { background: linear-gradient(180deg, #87ceeb 0%, #98d8e8 40%, rgba(172,200,210,0.95) 70%, rgba(191,220,230,0.98) 100%); z-index: 1; opacity: 1; }
+.layer-clouds { 
+  background: 
+    radial-gradient(ellipse 100px 60px at 25% 30%, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(ellipse 90px 55px at 70% 20%, rgba(255,255,255,.8) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(ellipse 80px 50px at 45% 50%, rgba(255,255,255,.75) 0%, rgba(255,255,255,0) 55%);
+  filter: blur(4px); 
+  z-index: 2; 
+  opacity: 1; 
+  transition: opacity .5s ease; 
+}
+.layer-mountains { background: linear-gradient( to top, rgba(44,75,62,.85) 20%, rgba(44,75,62,0) 60% ); z-index: 2; opacity: .5; transition: opacity .5s ease; }
+.layer-forest { display: none; }
+
+/* 맵 노드, 경로 스타일 */
+.map-path { stroke: #ffffff; stroke-width: 4; stroke-dasharray: 2 8; opacity: .8; }
+.map-node { cursor: pointer; }
+.map-node circle { fill: rgba(255,255,255,0.85); stroke: rgba(0,0,0,.15); stroke-width: 2; }
+.map-node.locked circle { fill: rgba(255,255,255,0.35); }
+.map-node text { font-weight: 700; font-size: 12px; fill: #0b1a10; }
+.map-mountain { fill: rgba(20, 40, 30, 0.35); }
+.map-flag-pole { stroke: #2a2a2a; stroke-width: 2; }
+.map-flag-banner { fill: #ffd54a; stroke: #caa62e; stroke-width: 1; }
+.map-hiker { fill: #ff7a00; filter: drop-shadow(0 2px 2px rgba(0,0,0,.35)); transition: transform .25s ease; }
+.map-kid-head { fill: #ffd7b3; }
+.map-kid-body { fill: #5aa3ff; }
+.map-kid-shadow { fill: rgba(0,0,0,.18); }
+.kid-bounce { animation: kid-bounce 1.4s ease-in-out infinite; transform-origin: center; }
+@keyframes kid-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.ranking-dialog {
+  border: none;
+  border-radius: 14px;
+  padding: 16px 16px 12px;
+  background: var(--card);
+  color: var(--text);
+  width: min(520px, 92vw);
+}
+.ranking-dialog::backdrop { background: rgba(0,0,0,0.6); }
+.ranking-list { margin: 8px 0 16px; padding-left: 22px; }
+.dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+@media (max-width: 420px) {
+  .btn { padding: 10px 12px; }
+  .btn.ox { padding: 12px 0; }
+  .map-wrap { width: 95vw; }
+}
+
+:root {
+  --bg: #0f1214;
+  --panel: #151a1e;
+  --text: #e8f0ea;
+  --muted: #a8b3ad;
+  --primary: #34c759;
+  --danger: #ff453a;
+  --outline: rgba(255, 255, 255, 0.1);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: var(--text);
+  background: var(--bg);
+}
+
+.app-header, .app-footer {
+  padding: 12px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--outline);
+}
+.app-footer { border-top: 1px solid var(--outline); border-bottom: none; text-align: center; color: var(--muted); }
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand .logo { font-size: 20px; }
+.brand .title { font-size: 18px; margin: 0; }
+
+main { padding: 12px 16px 64px; max-width: 720px; margin: 0 auto; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+.actions { display: flex; gap: 8px; margin: 8px 0 16px; }
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--outline);
+  background: transparent;
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn.primary { background: var(--primary); color: #0a0a0a; border-color: transparent; }
+.btn.danger { background: var(--danger); color: #fff; border-color: transparent; }
+.btn.outline { background: transparent; }
+.btn:active { transform: translateY(1px); }
+
+.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.list-item { background: var(--panel); border: 1px solid var(--outline); border-radius: 12px; padding: 12px; display: grid; grid-template-columns: 1fr auto; gap: 6px; cursor: pointer; }
+.list-item .title { font-weight: 600; }
+.list-item .meta { color: var(--muted); font-size: 12px; }
+.list-item .photo { font-size: 18px; }
+
+.empty { color: var(--muted); text-align: center; margin-top: 24px; }
+.hidden { display: none !important; }
+
+.field { display: grid; gap: 6px; margin-bottom: 12px; }
+.field.inline { grid-template-columns: 1fr auto; align-items: center; }
+label { color: var(--muted); font-size: 14px; }
+input[type="text"], input[type="date"], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--outline);
+  background: var(--panel);
+  color: var(--text);
+}
+textarea { resize: vertical; }
+
+.form-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+.detail-card { background: var(--panel); border: 1px solid var(--outline); border-radius: 12px; padding: 12px; display: grid; gap: 10px; }
+.detail-row { display: grid; grid-template-columns: 88px 1fr; gap: 8px; }
+.detail-row .key { color: var(--muted); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (min-width: 768px) {
+  .brand .title { font-size: 20px; }
+}
+
+
