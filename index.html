@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>산림 환경교육 O/X 퀴즈</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>🌲 산림 환경교육 O/X 퀴즈</h1>
+    </header>
+
+    <!-- 메인 화면 -->
+    <section id="screen-home" class="screen active">
+      <p class="lead">산림·환경 상식을 쉽고 재밌게 배워봐요!</p>
+      <div class="actions">
+        <button id="btn-go-levels" class="btn primary">단계 선택</button>
+        <button id="btn-show-ranking" class="btn">랭킹 보기</button>
+      </div>
+    </section>
+
+    <!-- 단계 선택 화면 (지도형 경로) -->
+    <section id="screen-levels" class="screen">
+      <h2>여정 지도</h2>
+      <p class="lead">단계를 완료하며 자연을 회복시켜요.</p>
+      <div class="map-wrap">
+        <div class="nature-layer layer-sky" aria-hidden="true"></div>
+        <div class="nature-layer layer-clouds" aria-hidden="true"></div>
+        <div class="nature-layer layer-mountains" aria-hidden="true"></div>
+        <div class="nature-layer layer-forest" aria-hidden="true"></div>
+        <svg id="levels-map" class="levels-map" viewBox="0 0 320 540" role="img" aria-label="단계 지도"></svg>
+      </div>
+      <div class="actions" style="margin-top:16px">
+        <button id="btn-back-home" class="btn">뒤로</button>
+      </div>
+    </section>
+
+    <!-- 퀴즈 화면 -->
+    <section id="screen-quiz" class="screen">
+      <div class="quiz-status">
+        <span id="progress">1 / 1</span>
+        <span id="score">점수: 0</span>
+        <span id="timer" aria-live="polite">10초</span>
+      </div>
+      <div id="question" class="question">문제가 여기에 표시됩니다.</div>
+      <div class="ox-buttons">
+        <button id="btn-o" class="btn ox o">O</button>
+        <button id="btn-x" class="btn ox x">X</button>
+      </div>
+    </section>
+
+    <!-- 결과 화면 -->
+    <section id="screen-result" class="screen">
+      <h2>퀴즈 종료</h2>
+      <p id="final-score" class="final-score">당신의 점수: 0</p>
+      <div class="actions">
+        <button id="btn-next-level" class="btn primary">다음 단계</button>
+        <button id="btn-retry" class="btn">단계 다시 풀기</button>
+        <button id="btn-result-home" class="btn">홈으로</button>
+        <button id="btn-result-ranking" class="btn">랭킹 보기</button>
+      </div>
+    </section>
+
+    <!-- 모든 단계 완료 화면 -->
+    <section id="screen-finale" class="screen">
+      <h2>축하합니다! 🎉</h2>
+      <p class="final-score">10단계까지 모두 완료했어요. 훌륭해요!</p>
+      <div class="actions">
+        <button id="btn-finale-levels" class="btn primary">단계 보기</button>
+        <button id="btn-finale-home" class="btn">메인으로</button>
+      </div>
+    </section>
+
+    <!-- 랭킹 모달 -->
+    <dialog id="ranking-dialog" class="ranking-dialog">
+      <h3>🏆 랭킹</h3>
+      <ol id="ranking-list" class="ranking-list"></ol>
+      <div class="dialog-actions">
+        <button id="btn-clear-scores" class="btn danger">점수 초기화</button>
+        <button id="btn-close-ranking" class="btn">닫기</button>
+      </div>
+    </dialog>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
